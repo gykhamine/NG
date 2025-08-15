@@ -5,7 +5,7 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: url('statics/33.png') center no-repeat fixed;
-      background-size: cover;
+    
       background-repeat: no-repeat;
       background-attachment: fixed;
       color: #388e3c;
@@ -32,8 +32,8 @@
     /* HEADER */
     header {
       position: relative;
-      height: 60vh;
-      background: url('statics/j.png') center no-repeat;
+      height: 50vh;
+      background: url('statics/p.png') center/cover ;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -45,7 +45,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background-color: rgba(0, 50, 0, 0.75);
+      background-color: rgba(0, 50, 0, 0.28);
       z-index: 1;
     }
     header .header-content {
