@@ -248,3 +248,36 @@
         font-size: 1rem;
       }
     }
+
+
+        .service-card {
+      border: 2px solid #4caf50;
+      padding: 24px 20px;
+      width: 320px;
+      margin-bottom: 24px;
+      background: rgba(255,255,255,0.18);
+      box-shadow: 0 8px 32px #4caf5022;
+      backdrop-filter: blur(12px) saturate(180%);
+      border-radius: 22px;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      display: flex;
+      flex-direction: column;
+     
+    }
+    .service-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 14px 30px #4caf50cc;
+    }
+    .service-card h3 {
+      color: #388e3c;
+      margin-bottom: 14px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+    }
+    .service-card p {
+      color: #388e3c;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
