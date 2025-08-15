@@ -1,483 +1,108 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digital PME Congo – Solutions numériques & IA</title>
-  <style>
-    /* RESET & BASE */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0b0f0a;
-      color: #c8e6c9;
-      width: 100%;
-      flex-direction: column; /* Stack header, content, footer */
-      overflow-x: hidden; /* Prevent horizontal scrollbar during sidebar animation */
-    }
-    a {
-      text-align: center;
-      color: #81c784;
-      margin-bottom: 32px; /* General link margin, overridden for sidebar */
-      font-size: 2.3rem;
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-      font-weight: 700;
-      text-shadow: 0 0 8px #4caf5088;
-      text-decoration: none; /* Remove underline by default */
-    }
-    a:hover {
-      color: #4caf50;
-      text-decoration: underline;
-    }
-
-    /* HEADER */
-    header {
-      position: relative;
-      height: 60vh;
-      background: url('statics/3.png') center/cover no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #a5d6a7;
-      width: 100%;
-    }
-    header::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: rgba(0, 50, 0, 0.75);
-      z-index: 1;
-    }
-    header .header-content {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      padding: 0 20px;
-    }
-    header h1 {
-      font-size: 3rem;
-      margin-bottom: 0.3em;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      font-weight: 900;
-      text-shadow: 0 0 5px #2e7d32aa;
-    }
-    header p {
-      font-size: 1.4rem;
-      font-weight: 600;
-      text-shadow: 0 0 4px #2e7d3288;
-    }
-
-    /* MAIN CONTENT WRAPPER */
-    .content-wrapper {
-        display: flex; /* Always display sidebar and main content side-by-side */
-        flex-grow: 1;
-        position: relative;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      background-color: #122612;
-      border-right: 2px solid #4caf50;
-      padding: 20px;
-      width: 250px;
-      flex-shrink: 0; /* Prevent sidebar from shrinking */
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      box-shadow: 2px 0 12px #4caf5088;
-      align-items: center;
-      padding-top: 40px;
-      transition: transform 0.3s ease-in-out; /* Smooth transition for sidebar movement */
-      z-index: 10;
-      /* Default state for larger screens: visible */
-      transform: translateX(0);
-    }
-
-    .sidebar.hidden {
-      transform: translateX(-100%); /* Hide sidebar by moving it completely off-screen */
-    }
-
-    .sidebar a {
-      font-size: 1.2rem;
-      margin-bottom: 0;
-      padding: 8px 15px;
-      border-radius: 8px;
-      display: block;
-      width: 100%;
-      text-align: left;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      text-shadow: none;
-      letter-spacing: 1px;
-    }
-    .sidebar a:hover {
-      background-color: rgba(76, 175, 80, 0.2);
-      color: #76ff03;
-      text-decoration: none;
-    }
-
-    /* MAIN CONTAINER */
-    .container {
-      max-width: 1100px;
-      margin: 40px auto 80px; /* Adjust margin to account for sidebar */
-      padding: 0 20px;
-      flex-grow: 1;
-      transition: margin-left 0.3s ease-in-out; /* Smooth transition for main content shift */
-    }
-
-    /* Adjust main content when sidebar is hidden on small screens */
-    .content-wrapper.sidebar-hidden .container {
-      margin-left: 0; /* No left margin when sidebar is hidden */
-    }
-
-    /* SIDEBAR TOGGLE BUTTON */
-    .sidebar-toggle {
-        position: fixed; /* Keep button fixed */
-        top: 15px; /* Adjust as needed */
-        left: 15px; /* Adjust as needed */
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 15px;
-        cursor: pointer;
-        font-size: 1rem;
-        z-index: 100; /* Ensure it's on top of everything */
-        transition: background-color 0.3s ease;
-        display: none; /* Hidden by default, shown only on small screens */
-    }
-
-    .sidebar-toggle:hover {
-        background-color: #388e3c;
-    }
-
-    /* SECTIONS */
-    section {
-      margin-bottom: 60px;
-    }
-    h2 {
-      text-align: center;
-      color: #81c784;
-      margin-bottom: 32px;
-      font-size: 2.3rem;
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-      font-weight: 700;
-      text-shadow: 0 0 8px #4caf5088;
-    }
-
-    /* ABOUT */
-    #about p {
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 1.15rem;
-      color: #c8e6c9dd;
-      font-weight: 500;
-      line-height: 1.8;
-    }
-    #about strong {
-      color: #a5d6a7;
-    }
-
-    /* SERVICES GRID */
-    .services-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 24px;
-    }
-    .service-card {
-      background-color: #122612;
-      border: 2px solid #4caf50;
-      border-radius: 14px;
-      padding: 24px 20px;
-      width: 320px;
-      box-shadow: 0 0 12px #4caf5088;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .service-card:hover {
-      transform: translateY(-7px);
-      box-shadow: 0 14px 30px #4caf50cc;
-    }
-    .service-card h3 {
-      color: #a5d6a7;
-      margin-bottom: 14px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 1.1px;
-    }
-    .service-card p {
-      font-size: 1.05rem;
-      color: #d0e8d0;
-      margin-bottom: 18px;
-      flex-grow: 1;
-    }
-    .price {
-      font-weight: 700;
-      color: #76ff03;
-      font-size: 1.2rem;
-      text-align: right;
-      font-family: 'Segoe UI Black', sans-serif;
-      letter-spacing: 0.7px;
-      user-select: none;
-    }
-
-    /* CONTACT */
-    #contact {
-      background-color: #122612;
-      border-radius: 14px;
-      padding: 32px 24px;
-      max-width: 650px;
-      margin: 0 auto 80px;
-      text-align: center;
-      box-shadow: 0 0 22px #4caf50aa;
-    }
-    #contact h2 {
-      margin-bottom: 28px;
-    }
-    #contact p {
-      font-size: 1.15rem;
-      margin: 12px 0;
-      color: #c8e6c9dd;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      user-select: text;
-    }
-    #contact p strong {
-      color: #81c784;
-      min-width: 110px;
-      text-align: right;
-    }
-    #contact p a {
-      word-break: break-all;
-    }
-
-    /* Icons for contact */
-    #contact p strong::before {
-      content: "📧";
-      margin-right: 8px;
-      font-size: 1.2rem;
-      user-select: none;
-    }
-    #contact p:nth-child(2) strong::before { content: "📧"; }      /* Gmail */
-    #contact p:nth-child(3) strong::before { content: "📱"; }      /* WhatsApp */
-    #contact p:nth-child(4) strong::before { content: "🐙"; }      /* GitHub */
-    #contact p:nth-child(5) strong::before { content: "💬"; }      /* Discord */
-    #contact p:nth-child(6) strong::before { content: "🔊"; }      /* Jami */
-    #contact p:nth-child(7) strong::before { content: "▶️"; }      /* YouTube */
-    #contact p:nth-child(8) strong::before { content: "🐦"; }      /* X */
-    #contact p:nth-child(9) strong::before { content: "📘"; }      /* Facebook */
-    #contact p:nth-child(10) strong::before { content: "🎵"; }     /* TikTok */
-    #contact p:nth-child(11) strong::before { content: "📨"; }     /* Telegram */
-
-    /* FOOTER */
-    footer {
-      background-color: #0a1b0a;
-      color: #568d56;
-      text-align: center;
-      padding: 18px 12px;
-      font-size: 0.9rem;
-      letter-spacing: 1.2px;
-      font-weight: 600;
-      user-select: none;
-      width: 100%;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .sidebar {
-        position: fixed; /* Sidebar fixed position for overlay/slide effect */
-        height: 100%; /* Take full viewport height */
-        top: 0;
-        left: 0;
-        transform: translateX(-100%); /* **Starts hidden on small screens** */
-        border-right: 2px solid #4caf50; /* Keep border on the right */
-        border-bottom: none; /* Remove bottom border */
-        padding-top: 80px; /* Make space for toggle button */
-      }
-      .sidebar.visible {
-        transform: translateX(0%); /* Show sidebar when toggled */
-      }
-      .sidebar a {
-        width: 100%; /* Links take full sidebar width */
-        text-align: left;
-        margin: 0; /* Remove horizontal margins */
-      }
-
-      .sidebar-toggle {
-          display: block; /* **Always show the toggle button on small screens** */
-      }
-
-      .container {
-          /* No initial margin-left on small screens as sidebar is hidden */
-          margin-left: 0;
-          transition: margin-left 0.3s ease-in-out;
-      }
-      /* If you want the main content to shift when the sidebar is open on small screens */
-      .content-wrapper.sidebar-open .container {
-          margin-left: 250px; /* Shift content by sidebar width */
-      }
-    }
-  </style>
+<html lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le Numérique Group – Maison de service informatique à Oyo</title>
+  <link rel="stylesheet" href="1.css">
 </head>
 <body>
-
 <header>
   <div class="header-content">
-    <h1>Digital PME Congo</h1>
-    <p>Solutions numériques, IA & services pour entreprises civiles et militaires</p>
+    <h1>Le Numérique Group</h1>
+    <p>La maison de service informatique la plus prestigieuse de la ville d'Oyo.<br>Service professionnel de qualité et solutions sur mesure pour particuliers et entreprises.</p>
   </div>
 </header>
-
-<div class="content-wrapper" id="contentWrapper">
-  <aside class="sidebar" id="sidebar">
-
-
-    <a href="at/cv.html">Auteur</a>
-    <a href="ct.html">Contact</a>
-  </aside>
-
-  <button class="sidebar-toggle" id="sidebarToggle">
-    ☰ Menu
-  </button>
-
-  <main class="container">
-
-    <section id="about">
-      <h2>À propos de Digital PME Congo</h2>
-      <p>
-        Filiale de <strong>GCI – Gykhamine Concept Investigation</strong>, Digital PME Congo est votre allié stratégique pour réussir votre transformation digitale.
-        <br /><br />
-        Nous accompagnons les petites et moyennes entreprises ainsi que les acteurs du secteur militaire avec des solutions innovantes, fiables et adaptées au contexte congolais.
-        <br /><br />
-        Nos services couvrent un large spectre : du développement web, à l’intelligence artificielle, en passant par la formation, l’assistance technique et la recherche & développement.
-        <br /><br />
-        Choisissez l’excellence locale avec une équipe passionnée qui allie expertise technologique, proximité et engagement pour votre succès durable.
-      </p>
+<main>
+  <div class="content-wrapper" id="contentWrapper">
+    <aside class="sidebar" id="sidebar">
+      <a href="ct.html">contacte</a>
+      <!-- Autres liens si besoin -->
+    </aside>
+    <section id="about" style="padding: 40px;">
+      <h2>À propos</h2>
+      <p><strong>Le Numérique Group</strong> est la référence à Oyo pour
+ tous vos besoins en informatique, infographie, photographie, 
+communication, impression et bien plus. Notre équipe vous accompagne 
+avec professionnalisme et créativité pour valoriser vos projets.</p>
     </section>
-
     <section id="services">
       <h2>Nos services</h2>
       <div class="services-grid">
-
         <div class="service-card">
-          <h3>🌐 Site vitrine</h3>
-          <p>Présentez votre activité en ligne avec un site moderne, responsive et optimisé SEO pour attirer et convaincre vos clients facilement.</p>
-          <a href="sd/srv.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>🛒 Site e-commerce</h3>
-          <p>Vendez vos produits en ligne avec une boutique sécurisée, intégrée aux solutions de paiement mobile populaires en Afrique.</p>
-          <a href="sd/ec.html">plus</a>
-        </div>
-
-
-        <div class="service-card">
-          <h3>📊 Logiciels de gestion</h3>
-          <p>Automatisez la gestion de vos stocks, ventes, personnel et sécurité avec des solutions adaptées à vos besoins spécifiques.</p>
-          <a href="sd/lg.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>🧠 Intelligence Artificielle</h3>
-          <p>Améliorez vos décisions et gagnez en efficacité grâce à des outils d’IA : chatbots, analyse prédictive, automatisation intelligente.</p>
-          <a href="sd/ia.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>📈 Analyse de données</h3>
-          <p>Exploitez vos données avec des tableaux de bord interactifs pour piloter votre croissance et anticiper les tendances du marché.</p>
+          <img class="service-img" src="statics/4A.png" alt="Infographie et design">
+          <h3>🎨 Infographie et design</h3>
+          <p>Création graphique professionnelle pour tous vos supports numériques et imprimés.</p>
           <a href="sd/ad.html">plus</a>
         </div>
-
         <div class="service-card">
-          <h3>🔐 Solutions secteur militaire & sécurité</h3>
-          <p>Déployez des outils robustes pour la gestion sécurisée du personnel, armement, badges QR, et communication interne sécurisée.</p>
-          <a href="sd/sm.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>🔌 Intégration & API</h3>
-          <p>Connectez vos systèmes pour automatiser les flux et améliorer l’efficacité opérationnelle avec des intégrations sur mesure.</p>
-          <a href="sd/api.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>🎓 Formation</h3>
-          <p>Formez vos équipes aux compétences clés : informatique, développement, cybersécurité et intelligence artificielle.</p>
-          <a href="sd/fr.html">plus</a>
-        </div>
-
-        <div class="service-card">
-          <h3>🛠️ Assistance technique</h3>
-          <p>Maintenance, support et dépannage réactif pour garantir la continuité et la sécurité de vos systèmes numériques.</p>
+          <img class="service-img" src="statics/8A.png" alt="Bureautique">
+          <h3>🖥️ Bureautique</h3>
+          <p>Services de bureautique pour faciliter la gestion de vos documents et tâches administratives.</p>
           <a href="sd/as.html">plus</a>
         </div>
-
         <div class="service-card">
-          <h3>🔬 Recherche & Développement</h3>
-          <p>Conception et développement de solutions innovantes adaptées à vos défis spécifiques, pour garder une longueur d’avance.</p>
+          <img class="service-img" src="statics/1A.png" alt="Labo photo & Photographie">
+          <h3>📷 Labo photo & Photographie</h3>
+          <p>Studio photo, reportage, shooting en famille et portraits sur bois (A1, A2, A3, A4).</p>
+          <a href="sd/srv.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/10A.png" alt="Agence de communication">
+          <h3>📢 Agence de communication</h3>
+          <p>Stratégie, création et diffusion de vos messages pour booster votre visibilité.</p>
+          <a href="sd/ec.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/5A.png" alt="Décoration">
+          <h3>🏠 Décoration</h3>
+          <p>Décoration sur tout type de couleur d’habit et personnalisation de vos espaces.</p>
+          <a href="sd/fr.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/6A.png" alt="Cachet numérique">
+          <h3>🔖 Fabrication de cachet numérique</h3>
+          <p>Conception et réalisation de cachets numériques pour vos besoins professionnels.</p>
+          <a href="sd/ia.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/9A.png" alt="Impression">
+          <h3>🖨️ Impression</h3>
+          <p>Impression sur bâche, vinyle perforé, tasse, t-shirt et autres supports personnalisés.</p>
+          <a href="sd/lg.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/3A.png" alt="Location vidéo">
+          <h3>🎥 Location de matériel vidéo</h3>
+          <p>Location de caméras et autres équipements pour toutes vos cérémonies et événements.</p>
           <a href="sd/rd.html">plus</a>
         </div>
-
+        <div class="service-card">
+          <img class="service-img" src="statics/11A.png" alt="Reportage">
+          <h3>📰 Reportage</h3>
+          <p>Couverture professionnelle de vos événements et réalisation de reportages sur mesure.</p>
+          <a href="sd/sm.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/2A.png" alt="Shooting famille">
+          <h3>👨‍👩‍👧‍👦 Séance photo shooting en famille</h3>
+          <p>Séances photo professionnelles pour immortaliser vos moments en famille.</p>
+          <a href="sd/shooting.html">plus</a>
+        </div>
+        <div class="service-card">
+          <img class="service-img" src="statics/7A.png" alt="Portrait en bois">
+          <h3>🖼️ Portrait en bois A1, A2, A3, A4</h3>
+          <p>Réalisation de portraits sur bois dans différents formats pour une touche artistique unique.</p>
+          <a href="sd/portrait.html">plus</a>
+        </div>
       </div>
     </section>
+  </div>
+</main>
+<footer>
+  <p>© 2025 Le Numérique Group – Tous droits réservés.</p>
+</footer>
 
-  </main>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const toggleButton = document.getElementById('sidebarToggle');
-    const contentWrapper = document.getElementById('contentWrapper');
-    const breakpoint = 768; // Define the breakpoint for small screens
-
-    function toggleSidebar() {
-      // Toggle visibility classes on the sidebar
-      sidebar.classList.toggle('hidden');
-      sidebar.classList.toggle('visible');
-
-      // Toggle content shift class on the wrapper
-      contentWrapper.classList.toggle('sidebar-open');
-    }
-
-    // Attach event listener to the toggle button
-    toggleButton.addEventListener('click', toggleSidebar);
-
-    // Function to set sidebar state based on screen width
-    function setInitialSidebarState() {
-      if (window.innerWidth > breakpoint) {
-        // Large screens: Sidebar is always visible, button hidden
-        sidebar.classList.remove('hidden', 'visible');
-        contentWrapper.classList.remove('sidebar-open');
-        toggleButton.style.display = 'none';
-      } else {
-        // Small screens: Sidebar starts hidden, button shown
-        sidebar.classList.add('hidden');
-        sidebar.classList.remove('visible');
-        contentWrapper.classList.remove('sidebar-open'); // Ensure no shift initially
-        toggleButton.style.display = 'block';
-      }
-    }
-
-    // Set initial state when the page loads
-    setInitialSidebarState();
-
-    // Update state on window resize
-    window.addEventListener('resize', setInitialSidebarState);
-  });
-</script>
-
-</body>
-</html>
+</body></html>
